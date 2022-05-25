@@ -283,13 +283,22 @@ def marker(m, filename, article):
         #     m.add_marker(location, popup, icon=folium.Icon(color="red", icon="info-sign"))
 
 
+heat_option = st.selectbox(
+        'Heatmap',
+        ('Jewish Population', 'Percentage of Total Population that is Jewish'))
+
+if heat_option == "Jewish Population":
+    val = "Jewish Population"
+elif heat_option == "Percentage of Total Population that is Jewish":
+    val = "Percentage"
+
 m = leafmap.Map(location=[39, -95], zoom_start=5)
 m.add_basemap("Esri.NatGeoWorldMap")
 m.add_heatmap(
     "heats.csv",
     latitude="Latitude",
     longitude="Longitude",
-    value="Jewish Population",
+    value=val,
     name="Heat map",
     radius=20,
 )
