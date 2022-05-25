@@ -351,7 +351,7 @@ with st.sidebar:
                 st.write("Subheading: " + known_entry.subheading)
             elif not math.isnan(known_entry.subheading):
                 st.write("Subheading: " + known_entry.subheading)
-            st.write("Page Number: " + known_entry.pagenum)
+            st.write("Page Number: " + str(known_entry.pagenum))
             known_entry.url
             st.markdown("""---""") 
         
