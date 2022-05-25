@@ -2,4 +2,4 @@ numpy
 pandas
 datetime
 leafmap
-streamlit-folium
+streamlit_folium
