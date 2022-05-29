@@ -13,6 +13,7 @@ import pandas as pd
 from datetime import datetime
 import leafmap.foliumap as leafmap
 import math
+import ast
 
 st.set_page_config(layout="wide")
 
@@ -21,7 +22,9 @@ Details of a campaign which Dr. Stephen Wise said was planned to exterminate all
 
 The story which Dr. Wise says was reportedly confirmed by the state department and a personal representative of President Roosevelt–deals with how more than 2,000,000 Jews already have been slaughtered in accordance with a race extinction order by Adolf Hitler.
 
-Before leaving for New York to address the committee this afternoon, Dr. Stephen S. Wise, chairman of he World Jewish congress and president of the American Jewish congress, said he caried official documentary proof that "Hitler has ordered the extermination of all Jews in Nazi-ruled Europe in 1942." After a consultation with state department officials, he announced they had termed authentic certain sources which revealed that approximately half of the estimated 4,000,000 Jews in Nazi-occupied Europe already have been killed and that Hitler was wrathful at "failure to complete the extermination immediately."
+Before leaving for New York to address the committee this afternoon, Dr. Stephen S. Wise, chairman of he World Jewish congress and president of the American Jewish congress, said he caried official documentary proof that "Hitler has ordered the extermination of all Jews in Nazi-ruled Europe in 1942." 
+
+After a consultation with state department officials, he announced they had termed authentic certain sources which revealed that approximately half of the estimated 4,000,000 Jews in Nazi-occupied Europe already have been killed and that Hitler was wrathful at "failure to complete the extermination immediately."
 
 To speed the slaughter of the other half during the remaining month before the edict's deadline, Dr. Wise said the Nazis were moving some four-fifths of the Jews in Hitler-ruled European countries to Poland. There, he said Nazi doctors were killing them at the rate of "more than 100 men an hour, per doctor," by injecting air bubbles into their veins "the simplest and cheapest method" they could find.
 
@@ -33,6 +36,18 @@ In addition to the state department which he said had provided the documentary p
 
 Whether details of the gruesome campaign will be revealed publicly will be decided by the committee, Dr. Wise, said, adding that any contemplated action will be announced after today's meeting.
 """
+
+a_1 = "Details of a campaign which Dr. Stephen Wise said was planned to exterminate all Jews in Nazi-occupied Europe by the end of the year are to be laid before a committee of leading Jewish organizations today in New York."
+a_2 = "The story which Dr. Wise says was reportedly confirmed by the state department and a personal representative of President Roosevelt–deals with how more than 2,000,000 Jews already have been slaughtered in accordance with a race extinction order by Adolf Hitler."
+a_3 = "Before leaving for New York to address the committee this afternoon, Dr. Stephen S. Wise, chairman of he World Jewish congress and president of the American Jewish congress, said he caried official documentary proof that 'Hitler has ordered the extermination of all Jews in Nazi-ruled Europe in 1942.'"
+a_4 = "After a consultation with state department officials, he announced they had termed authentic certain sources which revealed that approximately half of the estimated 4,000,000 Jews in Nazi-occupied Europe already have been killed and that Hitler was wrathful at 'failure to complete the extermination immediately.'"
+a_5 = "To speed the slaughter of the other half during the remaining month before the edict's deadline, Dr. Wise said the Nazis were moving some four-fifths of the Jews in Hitler-ruled European countries to Poland. There, he said Nazi doctors were killing them at the rate of 'more than 100 men an hour, per doctor,' by injecting air bubbles into their veins 'the simplest and cheapest method' they could find."
+a_6 = "Dr. Wise, who heads the committee, asserted that already the Jewish population of Warsaw had been reduced from 500,000 to about 100,000."
+a_7 = "(The Polish government in exile reported in London yesterday that Heinrich Himmler, Nazi Gestapo chief, had ordered the extermination of one-half of the Jewish population of Poland by the end of this year and that 250,000 had been killed through September under the program. Only 40,000 Jews skilled workers in the German war industry are to remain in the Warsaw Ghetto, the government said)"
+a_8 = "In addition to the state department which he said had provided the documentary proof of previous rumors and reports, the chairman said a 'representative of President Roosevelt, recently returned from Europe,' had confirmed other stories and told him that 'the worst you thought is true.'"
+a_9 = "Whether details of the gruesome campaign will be revealed publicly will be decided by the committee, Dr. Wise, said, adding that any contemplated action will be announced after today's meeting."
+
+a_list = [a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8, a_9]
 
 b_text = """
 
@@ -100,7 +115,7 @@ page = st.radio(
 show_headline = st.checkbox('Always Display Headline', value=True)
 
 class Entry:
-    def __init__(self, l, h, sh, p, n, c, s, u, pd, e):
+    def __init__(self, l, h, sh, p, n, c, s, u, pd, e, m):
         self.location = l
         self.headline = h
         self.subheading = sh
@@ -111,6 +126,7 @@ class Entry:
         self.url = u
         self.pubdate = pd
         self.event = e
+        self.missing = m
 
 class Newspaper:
     def __init__(self, n, e, c, s):
@@ -129,7 +145,7 @@ papers = {}
 
 def populate(filename, entries, papers):
     for i, r in pd.read_csv(filename).iterrows():
-        entry = Entry([r["Latitude"], r["Longitude"]], r["Headline"], r["Sub Headline"], r["Page"], r["Newspaper"], r["City"], r["State"], r["Page URL"], r["Publication Date"], r["Event"])
+        entry = Entry([r["Latitude"], r["Longitude"]], r["Headline"], r["Sub Headline"], r["Page"], r["Newspaper"], r["City"], r["State"], r["Page URL"], r["Publication Date"], r["Event"], r["Missing"])
         entries[(r["Latitude"], r["Longitude"])] = entry
         if r["Newspaper"] not in papers:
             new_paper = Newspaper(r["Newspaper"], [entry], r["City"], r["State"])
@@ -138,8 +154,8 @@ def populate(filename, entries, papers):
             papers[r["Newspaper"]].entries.append(entry)
 
 populate("nov-25-a.csv", entries, papers)
-populate("nov-25-b-offset.csv", entries, papers)
-populate("dec-17-final-offset.csv", entries, papers)
+# populate("nov-25-b-offset.csv", entries, papers)
+# populate("dec-17-final-offset.csv", entries, papers)
 
 
 # for i, r in pd.read_csv("nov-25-a.csv").iterrows():
@@ -337,13 +353,7 @@ if page == "Allies Denounce Nazi Plan to 'Exterminate' the Jews: December 17th, 
     marker(m, "dec-17-final-offset.csv", "D")
 
 dct = st_folium(m, width=1300, height=600)
-st.subheader("Wire Story:")
-if page == "Nazi Plan to Kill All Jews Confirmed: November 25th, 1942 A":
-    st.write(a_text)
-elif page == "Nazi Plan to Kill All Jews Confirmed: November 25th, 1942 B":
-    st.write(b_text)
-elif page == "Allies Denounce Nazi Plan to 'Exterminate' the Jews: December 17th, 1942":
-    st.write(d_text)
+
 
 with st.sidebar:
     if dct["last_object_clicked"] is not None:
@@ -363,6 +373,64 @@ with st.sidebar:
             st.write("Page Number: " + str(known_entry.pagenum))
             known_entry.url
             st.markdown("""---""") 
+        lst_missing = entry.missing
+        final_lst = ast.literal_eval(lst_missing)
+
         
     else:
         st.write(" ")
+
+st.subheader("Wire Story:")
+green = '<p style="font-family:Source Sans Pro; color:Green; font-size: 16px;">{}</p>'
+red = '<p style="font-family:Source Sans Pro; color:Red; font-size: 16px;">{}</p>'
+if page == "Nazi Plan to Kill All Jews Confirmed: November 25th, 1942 A":
+    if dct["last_object_clicked"] is not None:
+        if 0 in final_lst:
+            st.markdown(green.format(a_1), unsafe_allow_html=True)
+            st.markdown(green.format(a_2), unsafe_allow_html=True)
+            st.markdown(green.format(a_3), unsafe_allow_html=True)
+            st.markdown(green.format(a_4), unsafe_allow_html=True)
+            st.markdown(green.format(a_5), unsafe_allow_html=True)
+            st.markdown(green.format(a_6), unsafe_allow_html=True)
+            st.markdown(green.format(a_7), unsafe_allow_html=True)
+            st.markdown(green.format(a_8), unsafe_allow_html=True)
+            st.markdown(green.format(a_9), unsafe_allow_html=True)
+        elif 98 in final_lst or 99 in final_lst:
+            st.write("Exact paragraph numbering unavailable")
+            st.write(a_text)
+        else:
+            st.markdown(green.format(a_1), unsafe_allow_html=True)
+            st.markdown(green.format(a_2), unsafe_allow_html=True)
+            st.markdown(green.format(a_3), unsafe_allow_html=True)
+        if 4 in final_lst:
+            st.markdown(red.format(a_4), unsafe_allow_html=True)
+        elif 4 not in final_lst and 0 not in final_lst and 98 not in final_lst and 99 not in final_lst:
+            st.markdown(green.format(a_4), unsafe_allow_html=True)
+        if 5 in final_lst:
+            st.markdown(red.format(a_5), unsafe_allow_html=True)
+        elif 5 not in final_lst and 0 not in final_lst and 98 not in final_lst and 99 not in final_lst:
+            st.markdown(green.format(a_5), unsafe_allow_html=True)
+        if 6 in final_lst:
+            st.markdown(red.format(a_6), unsafe_allow_html=True)
+        elif 6 not in final_lst and 0 not in final_lst and 98 not in final_lst and 99 not in final_lst:
+            st.markdown(green.format(a_6), unsafe_allow_html=True)
+        if 7 in final_lst:
+            st.markdown(red.format(a_7), unsafe_allow_html=True)
+        elif 7 not in final_lst and 0 not in final_lst and 98 not in final_lst and 99 not in final_lst:
+            st.markdown(green.format(a_7), unsafe_allow_html=True)
+        if 8 in final_lst:
+            st.markdown(red.format(a_8), unsafe_allow_html=True)
+        elif 8 not in final_lst and 0 not in final_lst and 98 not in final_lst and 99 not in final_lst:
+            st.markdown(green.format(a_8), unsafe_allow_html=True)
+        if 9 in final_lst:
+            st.markdown(red.format(a_9), unsafe_allow_html=True)
+        elif 9 not in final_lst and 0 not in final_lst and 98 not in final_lst and 99 not in final_lst:
+            st.markdown(green.format(a_9), unsafe_allow_html=True)
+    else:
+        st.write(a_text)
+            
+
+elif page == "Nazi Plan to Kill All Jews Confirmed: November 25th, 1942 B":
+    st.write(b_text)
+elif page == "Allies Denounce Nazi Plan to 'Exterminate' the Jews: December 17th, 1942":
+    st.write(d_text)
