@@ -87,6 +87,13 @@ Attention recently was called to the German extermination campaign by Rabbi Step
 
 """
 
+d_1 = "The United States has joined other United Nations governments in condemning Germany's 'bestial policy of cold-blooded extermination' of the Jews and in pledging those responsible 'shall not escape retribution.'"
+d_2 = "In announcing the move the state department said reports from Europe indicate German authorities, passing beyond the stage of ordinary persecution 'are carrying into effect Hitler’s oft repeated intention to exterminate the Jewish people in Europe.' "
+d_3 = "The announcement described Poland is “the principal Nazi slaughter house” where ghettos established by the Germans are being systematically emptied of all Jews except a few skilled workers valuable to the war industries. "
+d_4 = "'None of those taken away are ever heard of again. The able-bodied are slowly worked to death in labor camps. The infirm are left to die of exposure and starvation or are deliberately massacred in mass executions. The number of victims of these bloody cruelties is reckoned in the many hundreds of thousands of entirely innocent men, women and children,' the announcement said. "
+d_5 = "Associated with the United States in the joint action are the Belgian Czechoslovak Greek, Luxembourg, Netherlands, Norwegian, Polish, Soviet, United Kingdom and Yugoslav governments and the French National (Fighting French) Committee. "
+d_6 = "Attention recently was called to the German extermination campaign by Rabbi Stephen M. Wise who charged the Germans not only systematically slaughtered Jews but utilized the corpses in the manufacture of soaps, fats and other products."
+
 
 # def _max_width_(prcnt_width:int = 75):
 #     max_width_str = "padding-left: 0rem; padding-right: 0rem;"
@@ -154,8 +161,8 @@ def populate(filename, entries, papers):
             papers[r["Newspaper"]].entries.append(entry)
 
 populate("nov-25-a.csv", entries, papers)
-# populate("nov-25-b-offset.csv", entries, papers)
-# populate("dec-17-final-offset.csv", entries, papers)
+populate("nov-25-b-offset.csv", entries, papers)
+populate("dec-17-final-offset.csv", entries, papers)
 
 
 # for i, r in pd.read_csv("nov-25-a.csv").iterrows():
@@ -383,6 +390,44 @@ with st.sidebar:
 st.subheader("Wire Story:")
 green = '<p style="font-family:Source Sans Pro; color:Green; font-size: 16px;">{}</p>'
 red = '<p style="font-family:Source Sans Pro; color:Red; font-size: 16px;">{}</p>'
+if page == "Nazi Plan to Kill All Jews Confirmed: November 25th, 1942 B":
+    st.write(b_text)
+if page == "Allies Denounce Nazi Plan to 'Exterminate' the Jews: December 17th, 1942":
+    if dct["last_object_clicked"] is not None:
+        if 0 in final_lst:
+            st.markdown(green.format(d_1), unsafe_allow_html=True)
+            st.markdown(green.format(d_2), unsafe_allow_html=True)
+            st.markdown(green.format(d_3), unsafe_allow_html=True)
+            st.markdown(green.format(d_4), unsafe_allow_html=True)
+            st.markdown(green.format(d_5), unsafe_allow_html=True)
+            st.markdown(green.format(d_6), unsafe_allow_html=True)
+        elif 98 in final_lst or 99 in final_lst:
+            st.write("Exact paragraph numbering unavailable. This is likely because I didn't have access to the entire article.")
+            st.write(d_text)
+        else:
+            st.markdown(green.format(d_1), unsafe_allow_html=True)
+        if 2 in final_lst:
+            st.markdown(red.format(d_2), unsafe_allow_html=True)
+        elif 2 not in final_lst and 0 not in final_lst and 98 not in final_lst and 99 not in final_lst:
+            st.markdown(green.format(d_2), unsafe_allow_html=True)
+        if 3 in final_lst:
+            st.markdown(red.format(d_3), unsafe_allow_html=True)
+        elif 3 not in final_lst and 0 not in final_lst and 98 not in final_lst and 99 not in final_lst:
+            st.markdown(green.format(d_3), unsafe_allow_html=True)
+        if 4 in final_lst:
+            st.markdown(red.format(d_4), unsafe_allow_html=True)
+        elif 4 not in final_lst and 0 not in final_lst and 98 not in final_lst and 99 not in final_lst:
+            st.markdown(green.format(d_4), unsafe_allow_html=True)
+        if 5 in final_lst:
+            st.markdown(red.format(d_5), unsafe_allow_html=True)
+        elif 5 not in final_lst and 0 not in final_lst and 98 not in final_lst and 99 not in final_lst:
+            st.markdown(green.format(d_5), unsafe_allow_html=True)
+        if 6 in final_lst:
+            st.markdown(red.format(d_6), unsafe_allow_html=True)
+        elif 6 not in final_lst and 0 not in final_lst and 98 not in final_lst and 99 not in final_lst:
+            st.markdown(green.format(d_6), unsafe_allow_html=True)
+    else:
+        st.write(d_text)
 if page == "Nazi Plan to Kill All Jews Confirmed: November 25th, 1942 A":
     if dct["last_object_clicked"] is not None:
         if 0 in final_lst:
@@ -396,7 +441,7 @@ if page == "Nazi Plan to Kill All Jews Confirmed: November 25th, 1942 A":
             st.markdown(green.format(a_8), unsafe_allow_html=True)
             st.markdown(green.format(a_9), unsafe_allow_html=True)
         elif 98 in final_lst or 99 in final_lst:
-            st.write("Exact paragraph numbering unavailable")
+            st.write("Exact paragraph numbering unavailable. This is likely because I didn't have access to the entire article.")
             st.write(a_text)
         else:
             st.markdown(green.format(a_1), unsafe_allow_html=True)
@@ -429,8 +474,3 @@ if page == "Nazi Plan to Kill All Jews Confirmed: November 25th, 1942 A":
     else:
         st.write(a_text)
             
-
-elif page == "Nazi Plan to Kill All Jews Confirmed: November 25th, 1942 B":
-    st.write(b_text)
-elif page == "Allies Denounce Nazi Plan to 'Exterminate' the Jews: December 17th, 1942":
-    st.write(d_text)
