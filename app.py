@@ -112,7 +112,7 @@ st.title("Headline Variation in AP Wire Copy")
 page = st.radio(
     "Select Date", ["Nazi Plan to Kill All Jews Confirmed: November 25th, 1942 A", 
     "Nazi Plan to Kill All Jews Confirmed: November 25th, 1942 B",
-    "Allies Denounce Nazi Plan to 'Exterminate' the Jews: December 17th, 1942"], index=0
+    "Allies Denounce Nazi Plan to 'Exterminate' the Jews: December 17th, 1942 A"], index=0
 )
 
 # option = st.selectbox(
@@ -162,7 +162,7 @@ def populate(filename, entries, papers):
 
 populate("nov-25-a.csv", entries, papers)
 populate("nov-25-b-offset.csv", entries, papers)
-populate("dec-17-final-offset.csv", entries, papers)
+populate("day.csv", entries, papers)
 
 
 # for i, r in pd.read_csv("nov-25-a.csv").iterrows():
@@ -349,7 +349,7 @@ if page == "Nazi Plan to Kill All Jews Confirmed: November 25th, 1942 B":
         st.write("Blue denotes that the perpetrators are included in the headline. Red denotes that they are not.")
     marker(m, "nov-25-b-offset.csv", "B")
 
-if page == "Allies Denounce Nazi Plan to 'Exterminate' the Jews: December 17th, 1942":
+if page == "Allies Denounce Nazi Plan to 'Exterminate' the Jews: December 17th, 1942 A":
     option = st.selectbox(
         'Clusters',
         ('None', 'Perpetrators', 'Policy'))
@@ -357,7 +357,7 @@ if page == "Allies Denounce Nazi Plan to 'Exterminate' the Jews: December 17th, 
         st.write("Blue denotes that the perpetrators are included in the headline. Red denotes that they are not.")
     elif option == "Policy":
         st.write("Blue denotes that 'policy' is used. Red denotes that it is not")
-    marker(m, "dec-17-final-offset.csv", "D")
+    marker(m, "day.csv", "D")
 
 dct = st_folium(m, width=1300, height=600)
 
@@ -392,7 +392,7 @@ green = '<p style="font-family:Source Sans Pro; color:Green; font-size: 16px;">{
 red = '<p style="font-family:Source Sans Pro; color:Red; font-size: 16px;">{}</p>'
 if page == "Nazi Plan to Kill All Jews Confirmed: November 25th, 1942 B":
     st.write(b_text)
-if page == "Allies Denounce Nazi Plan to 'Exterminate' the Jews: December 17th, 1942":
+if page == "Allies Denounce Nazi Plan to 'Exterminate' the Jews: December 17th, 1942 A":
     if dct["last_object_clicked"] is not None:
         if 0 in final_lst:
             st.markdown(green.format(d_1), unsafe_allow_html=True)
